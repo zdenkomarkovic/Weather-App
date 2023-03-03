@@ -136,6 +136,9 @@ button:hover {
   .div-text {
     padding-right: 0;
   }
+    .div-location {
+    padding: 10px;
+  }
   #icon-location {
     padding-left: 0;
   }
@@ -143,6 +146,9 @@ button:hover {
 @media screen and (max-width: 1000px) {
   * {
     font-size: 20px;
+  }
+  .container{
+    width: 90px;
   }
   h1 {
     font-size: 50px;
@@ -159,8 +165,16 @@ button:hover {
   * {
     font-size: 15px;
   }
+    .container {
+    width: 94%;
+    padding: 10px;
+  }
+  
   h1 {
     font-size: 40px;
+  }
+   .div-submit {
+    justify-content: center;
   }
   #div-city {
     grid-gap: 25px 25px;
