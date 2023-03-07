@@ -7,27 +7,28 @@ const input = document.querySelector("input");
 const divCity = document.getElementById("div-city");
 const btn = document.querySelector("button");
 const msg = document.getElementById("error");
+let lon;
+let lat;
 
 async function getCurrentWeather() {
-  const position = await new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(resolve, reject);
-  });
+  const position = navigator.geolocation.getCurrentPosition(showPosition);
+  async function showPosition(position) {
+    lat = position.coords.latitude;
+    lon = position.coords.longitude;
 
-  const { latitude, longitude } = position.coords;
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${"4d8fb5b93d4af21d66a2948710284366"}&units=metric`
+    );
+    const data = await response.json();
 
-  const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${"4d8fb5b93d4af21d66a2948710284366"}&units=metric`
-  );
-  const data = await response.json();
+    const { main, name, sys, weather } = data;
 
-  const { main, name, sys, weather } = data;
-
-  cityName.innerHTML = `${name} - <span>${sys.country}</span>`;
-  localTemp.innerHTML = `${Math.round(main.temp)}<sup> C</sup>`;
-  description.innerHTML = weather[0].description;
-  iconLocation.src = `http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
+    cityName.innerHTML = `${name} - <span>${sys.country}</span>`;
+    localTemp.innerHTML = `${Math.round(main.temp)}<sup> C</sup>`;
+    description.innerHTML = weather[0].description;
+    iconLocation.src = `http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
+  }
 }
-
 getCurrentWeather();
 
 btn.addEventListener("click", async function () {
@@ -57,7 +58,7 @@ btn.addEventListener("click", async function () {
     newDiv.appendChild(temperature);
 
     const image = document.createElement("img");
-    image.src = `http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
+    image.src = icon;
     image.alt = weather[0].icon;
     newDiv.appendChild(image);
 
